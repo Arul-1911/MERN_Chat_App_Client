@@ -4,27 +4,31 @@ import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { backendUrl } from "../BackendUrl/BackendUrl";
 import { AddIcon } from "@chakra-ui/icons";
-import  ChatLoading  from "../Components/ChatLoading";
+import ChatLoading from "../Components/ChatLoading";
 import { getSender } from "../Config/chatLogics";
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
   const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
+  const [loading, setLoading] = useState(true); // State to manage loading indicator
   const toast = useToast();
 
-  //FETCH CHATS
+  // FETCH CHATS
 
   const fetchChats = async () => {
     try {
+      setLoading(true); // Set loading to true before fetching chats
+
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
       const { data } = await axios.get(`${backendUrl}/api/chat`, config);
-      console.log(data);
       setChats(data);
+      setLoading(false); // Set loading to false after fetching chats
     } catch (error) {
+      setLoading(false); // Ensure loading is set to false even if an error occurs
       toast({
         title: "Error occured",
         description: "Failed to fetch the Chat",
@@ -83,7 +87,9 @@ const MyChats = () => {
           borderRadius="lg"
           overflowY="hidden"
         >
-          {chats ? (
+          {loading ? ( // Check loading state to display loading indicator
+            <ChatLoading />
+          ) : (
             <Stack overflowY="scroll">
               {chats.map((chat) => (
                 <Box
@@ -104,8 +110,6 @@ const MyChats = () => {
                 </Box>
               ))}
             </Stack>
-          ) : (
-            <ChatLoading />
           )}
         </Box>
       </Box>
