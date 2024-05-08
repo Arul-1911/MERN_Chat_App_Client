@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 
-//PROFILE MODEL 
+//PROFILE MODEL COMPONENT TO DISPLAY THE LOGGEDIN PROFILE
 const ProfileModel = ({user, children}) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
   return (
