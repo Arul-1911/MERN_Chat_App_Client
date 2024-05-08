@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 
-
+//PROFILE MODEL 
 const ProfileModel = ({user, children}) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
   return (
